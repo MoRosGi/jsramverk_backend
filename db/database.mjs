@@ -1,15 +1,9 @@
-import dotenv from 'dotenv';
-dotenv.config({ path: '../.env' });
-
+import { config } from '../config.mjs'
 import { MongoClient, ServerApiVersion } from 'mongodb';
 
 const database = {
   getDb: async function getDb () {
-      let dsn = `mongodb+srv://${process.env.ATLAS_USERNAME}:${process.env.ATLAS_PASSWORD}@text-editor.lhjsw.mongodb.net/?retryWrites=true&w=majority&appName=text-editor`;
-
-      if (process.env.NODE_ENV === 'test') {
-          dsn = "mongodb://localhost:27017/test";
-      }
+      let dsn = `mongodb+srv://${config.atlasUsername}:${config.atlasPassword}@text-editor.lhjsw.mongodb.net/?retryWrites=true&w=majority&appName=text-editor`;
 
       const client = new MongoClient(dsn, {
         serverApi: {
@@ -20,7 +14,11 @@ const database = {
       });
 
       const db = await client.db();
-      const collection = await db.collection("documents");
+      let collection = await db.collection("documents");
+
+      if (config.nodeEnv === 'test') {
+          collection = await db.collection("test");
+      }
 
       return {
           collection: collection,
