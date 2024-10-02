@@ -6,7 +6,7 @@ import documentModel from "../models/documentModel.mjs";
 router.get('/', async (req, res, next) => {
     try {
         const result = await documentModel.getAll();
-        res.json({
+        res.status(200).json({
             data: result
         });
     } catch (error) {
@@ -17,7 +17,7 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
     try {
         const result = await documentModel.getOne(req.params.id);
-        res.json({
+        res.status(200).json({
             data: result
         });
     } catch (error) {
@@ -31,7 +31,7 @@ router.post("/", async (req, res, next) => {
         res.status(201).json({ 
             data: {
                 msg: "Got a POST request, sending back 201 Created"
-            } 
+            }
         });
     } catch (error) {
         next(error);
@@ -41,10 +41,10 @@ router.post("/", async (req, res, next) => {
 router.put("/:id", async (req, res, next) => {
     try {
         await documentModel.updateOne(req.body);
-        res.status(204).json({ 
+        res.status(200).json({ 
             data: {
-                msg: "Got a PUT request, sending back 204 Updated"
-            } 
+                msg: "Got a PUT request, sending back 200 Updated"
+            }
         });
     } catch (error) {
         next(error);
@@ -54,10 +54,10 @@ router.put("/:id", async (req, res, next) => {
 router.delete("/:id", async (req, res, next) => {
     try {
         await documentModel.deleteOne(req.params.id);
-        res.status(204).json({ 
+        res.status(200).json({ 
             data: {
-                msg: "Got a POST request, sending back 204 Deleted"
-            } 
+                msg: "Got a DELETE request, sending back 200 Deleted"
+            }
         });
     } catch (error) {
         next(error);
