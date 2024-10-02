@@ -41,9 +41,22 @@ router.post("/", async (req, res, next) => {
 router.put("/:id", async (req, res, next) => {
     try {
         await documentModel.updateOne(req.body);
-        res.status(201).json({ 
+        res.status(204).json({ 
             data: {
-                msg: "Got a POST request, sending back 201 Updated"
+                msg: "Got a PUT request, sending back 204 Updated"
+            } 
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.delete("/:id", async (req, res, next) => {
+    try {
+        await documentModel.deleteOne(req.params.id);
+        res.status(204).json({ 
+            data: {
+                msg: "Got a POST request, sending back 204 Deleted"
             } 
         });
     } catch (error) {
