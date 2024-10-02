@@ -61,6 +61,19 @@ const documentModel = {
             await db.client.close();
         }
     },
+
+    deleteOne: async function deleteOne(id) {
+        const db = await database.getDb();
+
+        try {
+            const filter = {_id: ObjectId.createFromHexString(id)};
+            return await db.collection.deleteOne(filter);
+        } catch (e) {
+            throw new Error("Database query failed: " + e.message);
+        } finally {
+            await db.client.close();
+        }
+    },
 };
 
 export default documentModel;
