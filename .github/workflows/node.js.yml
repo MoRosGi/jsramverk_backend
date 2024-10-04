@@ -31,7 +31,8 @@ jobs:
               run: npm ci
 
             - name: Create .env file from secret
-                run: echo "${{ secrets.ENV_SECRET }}" > .env
+              run: |
+                  printf "%s" "${{ secrets.ENV_SECRET }}" > .env
 
             - run: npm run build --if-present
             - run: npm test
