@@ -1,4 +1,4 @@
-/* global it describe before after*/
+/* global it describe before */
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -18,35 +18,19 @@ describe('documentRoutes', () => {
 
     before(async () => {
         const db = await database.getDb();
-        const data = await db.collection.find().toArray();
-
-        if (data.length > 0) {
+    
+        await db.collection.find().toArray();
         await db.collection.deleteMany({});
-        }
-
-        await db.client.close();
-    });
-
-    after(async () => {
-        const db = await database.getDb();
-        const data = await db.collection.find().toArray();
-
-        if (data.length > 0) {
-            await db.collection.deleteMany({});
-        }
-
-
         await db.client.close();
     });
 
     describe('POST /documents', () => {
         it('Should return status 201', async function () {
-
             const document = {
                 title: "A Title",
                 content: "A Content"
             }
-    
+
             const res = await chai.request.execute(server).post("/documents/").send(document);
             res.should.have.status(201);
         });
