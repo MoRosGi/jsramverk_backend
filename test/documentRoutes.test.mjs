@@ -20,7 +20,10 @@ describe('documentRoutes', () => {
         const db = await database.getDb();
         const data = await db.collection.find().toArray();
 
+        if (data.length > 0) {
         await db.collection.deleteMany({});
+        }
+
         await db.client.close();
     });
 
@@ -28,7 +31,11 @@ describe('documentRoutes', () => {
         const db = await database.getDb();
         const data = await db.collection.find().toArray();
 
-        await db.collection.deleteMany({});
+        if (data.length > 0) {
+            await db.collection.deleteMany({});
+        }
+
+
         await db.client.close();
     });
 
