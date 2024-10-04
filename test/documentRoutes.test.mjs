@@ -52,7 +52,6 @@ describe('documentRoutes', () => {
             this.timeout(5000);
 
             const res = await chai.request.execute(server).get("/documents/");
-            console.log(res.body.data);
             res.body.data.should.have.lengthOf(1);
         });
     });
@@ -87,7 +86,6 @@ describe('documentRoutes', () => {
             this.timeout(5000);
 
             const res = await chai.request.execute(server).get(`/documents/${lastInsertedId}`);
-            console.log(res.body.data);
             res.body.data.title.should.equal("A modified title");
         });
     });
