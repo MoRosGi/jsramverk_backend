@@ -35,4 +35,10 @@ jobs:
                   printf "%s" "${{ secrets.ENV_SECRET }}" > .env
 
             - run: npm run build --if-present
-            - run: npm test
+            - name: Run tests
+              run: npm test
+              env:
+                  NODE_ENV: "test"
+                  ATLAS_USERNAME: ${{ secrets.ATLAS_USERNAME }}
+                  ATLAS_PASSWORD: ${{ secrets.ATLAS_PASSWORD }}
+                  PORT: ${{ secrets.PORT }}
