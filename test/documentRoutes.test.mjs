@@ -1,6 +1,8 @@
 /* global it describe before after*/
-import { config } from '../config.mjs'
-config.nodeEnv = 'test';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+process.env.NODE_ENV = 'test';
 
 import {expect, use} from 'chai';
 import chaiHttp from 'chai-http/index.js';

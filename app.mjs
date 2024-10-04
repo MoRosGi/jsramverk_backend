@@ -1,4 +1,5 @@
-import { config } from './config.mjs'
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 import express from 'express';
 import bodyParser from 'body-parser';
@@ -8,7 +9,7 @@ import cors from 'cors';
 
 import documentRoutes from "./routes/documentRoutes.mjs";
 
-const port = config.port || 3000;
+const port = process.env.PORT || 3000;
 const app = express();
 
 app.disable('x-powered-by');
@@ -17,7 +18,7 @@ app.set("view engine", "ejs");
 app.use(cors());
 app.use(express.static(path.join(process.cwd(), "public")));
 
-if (config.nodeEnv !== 'test') {
+if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('combined'));
 }
 
