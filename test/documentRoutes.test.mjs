@@ -43,8 +43,8 @@ describe('documentRoutes', () => {
         it('Should return status 201', async function () {
 
             const document = {
-                title: "A title",
-                content: "A content"
+                title: "A Title",
+                content: "A Content"
             }
     
             const res = await chai.request.execute(server).post("/documents/").send(document);
@@ -76,7 +76,7 @@ describe('documentRoutes', () => {
             this.timeout(5000);
 
             const res = await chai.request.execute(server).get(`/documents/${lastInsertedId}`);
-            res.body.data.title.should.equal("A title");
+            res.body.data.title.should.equal("A Title");
         });
     });
 
