@@ -3,20 +3,51 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cross-env NODE_OPTIONS='--experimental-loader @istanbuljs/esm-loader-hook' nyc --reporter=html --reporter=text --reporter=clover mocha --exit --timeout 10000",
+    "posttest": "npm run eslint",
     "start": "node app.mjs",
+    "clean": "rm -rf node_modules package-lock.json",
+    "eslint": "eslint .",
     "watch": "nodemon app.mjs"
+  },
+  "nyc": {
+    "include": [
+      "app.mjs",
+      "db/**/*.mjs",
+      "models/**/*.mjs",
+      "routes/**/*.mjs"
+    ],
+    "reporter": [
+      "html",
+      "text",
+      "clover"
+    ],
+    "all": true
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@istanbuljs/esm-loader-hook": "^0.2.0",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "mongodb": "^6.9.0",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.11.1",
+    "chai": "^5.1.1",
+    "chai-http": "^5.0.0",
+    "eslint": "^9.11.1",
+    "eslint-plugin-react": "^7.37.1",
+    "globals": "^15.10.0",
+    "javascript-style-guide": "^1.0.1",
+    "mocha": "^10.7.3",
+    "node-html-parser": "^6.1.13",
+    "nyc": "^17.1.0"
   }
 }
