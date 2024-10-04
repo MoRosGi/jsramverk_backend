@@ -40,67 +40,51 @@ describe('documentRoutes', () => {
     });
 
     describe('POST /documents', () => {
-        it('Should return status 201', (done) => {
+        it('Should return status 201', async function () {
 
             const document = {
                 title: "A title",
                 content: "A content"
             }
     
-            chai.request.execute(server)
-            .post("/documents/")
-            .send(document)
-            .end( (err, res) => {
-                res.should.have.status(201);
-                done();
-            });
+            const res = await chai.request.execute(server).post("/documents/").send(document);
+            res.should.have.status(201);
         });
     });
 
     describe('GET /documents', () => {
-        it('Should return status 200', (done) => {
-            chai.request.execute(server)
-            .get("/documents/")
-            .end((err, res) => {
-                res.should.have.status(200);
+        it('Should return status 200', async function () {
+            const res = await chai.request.execute(server).get("/documents/");
+            res.should.have.status(200);
 
-                lastInsertedId = res.body.data[0]._id;
-                done();
-            });
+            lastInsertedId = res.body.data[0]._id;
         });
 
-        it('Should have a length of 1', (done) => {
-            chai.request.execute(server)
-            .get("/documents/")
-            .end((err, res) => {
-                res.body.data.should.have.lengthOf(1);
-                done();
-            });
+        it('Should have a length of 1', async function () {
+            const res = await chai.request.execute(server).get("/documents/");
+            res.body.data.should.have.lengthOf(1);
         });
     });
 
     describe('GET /documents/:id', () => {
-        it('Should return status 200', (done) => {
-            chai.request.execute(server)
-            .get(`/documents/${lastInsertedId}`)
-            .end((err, res) => {
-                res.should.have.status(200);
-                done();
-            });
+        it('Should return status 200', async function () {
+            this.timeout(5000);
+
+            const res = await chai.request.execute(server).get(`/documents/${lastInsertedId}`);
+            res.should.have.status(200);
         });
 
-        it('Should be equal to title', (done) => {
-            chai.request.execute(server)
-            .get(`/documents/${lastInsertedId}`)
-            .end((err, res) => {
-                res.body.data.title.should.equal("A title");
-                done();
-            });
+        it('Should be equal to title', async function () {
+            this.timeout(5000);
+
+            const res = await chai.request.execute(server).get(`/documents/${lastInsertedId}`);
+            res.body.data.title.should.equal("A title");
         });
     });
 
     describe('PUT /documents/:id', () => {
-        it('Should return status 200', (done) => {
+        it('Should return status 200', async function () {
+            this.timeout(5000);
 
             const documentModified = {
                 _id: `${lastInsertedId}`,
@@ -108,42 +92,32 @@ describe('documentRoutes', () => {
                 content: "A modified content"
             }
 
-            chai.request.execute(server)
-            .put(`/documents/${lastInsertedId}`)
-            .send(documentModified)
-            .end((err, res) => {
-                res.should.have.status(200);
-                done();
-            });
+            const res = await chai.request.execute(server).put(`/documents/${lastInsertedId}`).send(documentModified);
+            res.should.have.status(200);
         });
 
-        it('Should be equal to modified title', (done) => {
-            chai.request.execute(server)
-            .get(`/documents/${lastInsertedId}`)
-            .end((err, res) => {
-                res.body.data.title.should.equal("A modified title");
-                done();
-            });
+        it('Should be equal to modified title', async function() {
+            this.timeout(5000);
+
+            const res = await chai.request.execute(server).get(`/documents/${lastInsertedId}`);
+            res.body.data.title.should.equal("A modified title");
         });
     });
 
     describe('DELETE /documents/:id', () => {
-        it('Should return status 200', (done) => {
-            chai.request.execute(server)
-            .delete(`/documents/${lastInsertedId}`)
-            .end((err, res) => {
-                res.should.have.status(200);
-                done();
-            });
+        it('Should return status 200', async function () {
+            this.timeout(5000);
+    
+            const res = await chai.request.execute(server).delete(`/documents/${lastInsertedId}`);
+            res.should.have.status(200);
         });
 
-        it('Should be null', (done) => {
-            chai.request.execute(server)
-            .get(`/documents/${lastInsertedId}`)
-            .end((err, res) => {
-                expect(res.body.data).to.be.null;
-                done();
-            });
+        it('Should be null', async function () {
+            this.timeout(5000);
+    
+            const res = await chai.request.execute(server).get(`/documents/${lastInsertedId}`);
+            expect(res.body.data).to.be.null;
+
         });
     });
 });
