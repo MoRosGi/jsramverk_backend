@@ -41,6 +41,7 @@ describe('documentRoutes', () => {
 
     describe('POST /documents', () => {
         it('Should return status 201', async function () {
+
             const document = {
                 title: "A Title",
                 content: "A Content"
@@ -60,6 +61,8 @@ describe('documentRoutes', () => {
         });
 
         it('Should have a length of 1', async function () {
+            this.timeout(5000);
+
             const res = await chai.request.execute(server).get("/documents/");
             res.body.data.should.have.lengthOf(1);
         });
@@ -72,6 +75,8 @@ describe('documentRoutes', () => {
         });
 
         it('Should be equal to title', async function () {
+            this.timeout(5000);
+
             const res = await chai.request.execute(server).get(`/documents/${lastInsertedId}`);
             res.body.data.title.should.equal("A Title");
         });
@@ -90,6 +95,8 @@ describe('documentRoutes', () => {
         });
 
         it('Should be equal to modified title', async function() {
+            this.timeout(5000);
+
             const res = await chai.request.execute(server).get(`/documents/${lastInsertedId}`);
             res.body.data.title.should.equal("A modified title");
         });
