@@ -68,8 +68,6 @@ describe('documentRoutes', () => {
 
     describe('GET /documents/:id', () => {
         it('Should return status 200', async function () {
-            this.timeout(5000);
-
             const res = await chai.request.execute(server).get(`/documents/${lastInsertedId}`);
             res.should.have.status(200);
         });
@@ -84,8 +82,6 @@ describe('documentRoutes', () => {
 
     describe('PUT /documents/:id', () => {
         it('Should return status 200', async function () {
-            this.timeout(5000);
-
             const documentModified = {
                 _id: `${lastInsertedId}`,
                 title: "A modified title",
@@ -106,15 +102,11 @@ describe('documentRoutes', () => {
 
     describe('DELETE /documents/:id', () => {
         it('Should return status 200', async function () {
-            this.timeout(5000);
-    
             const res = await chai.request.execute(server).delete(`/documents/${lastInsertedId}`);
             res.should.have.status(200);
         });
 
         it('Should be null', async function () {
-            this.timeout(5000);
-    
             const res = await chai.request.execute(server).get(`/documents/${lastInsertedId}`);
             expect(res.body.data).to.be.null;
 
