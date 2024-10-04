@@ -75,7 +75,7 @@ describe('documentRoutes', () => {
         });
 
         it('Should be equal to title', async function () {
-            this.timeout(10000);
+            this.timeout(5000);
 
             const res = await chai.request.execute(server).get(`/documents/${lastInsertedId}`);
             res.body.data.title.should.equal("A Title");
@@ -95,7 +95,7 @@ describe('documentRoutes', () => {
         });
 
         it('Should be equal to modified title', async function() {
-            this.timeout(10000);
+            this.timeout(5000);
 
             const res = await chai.request.execute(server).get(`/documents/${lastInsertedId}`);
             res.body.data.title.should.equal("A modified title");
