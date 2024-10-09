@@ -25,8 +25,11 @@ describe('documentRoutes', () => {
     });
 
     after(async () => {
+        const db = await database.getDb();
+
+        await db.collection.deleteMany({});
         await dbClient.close();
-        await db.client.close();
+        await server.close();
     });
 
     describe('POST /documents', () => {
