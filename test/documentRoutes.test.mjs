@@ -5,7 +5,7 @@ dotenv.config();
 process.env.NODE_ENV = 'test';
 
 import {expect, use} from 'chai';
-import chaiHttp from 'chai-http/index.js';
+import chaiHttp from 'chai-http';
 
 import server from '../app.mjs';
 import database from '../db/database.mjs';
