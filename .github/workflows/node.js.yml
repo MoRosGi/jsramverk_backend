@@ -16,10 +16,10 @@ jobs:
                 mongodb-version: ["6,9"]
 
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
 
             - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v3
+              uses: actions/setup-node@v4
               with:
                   node-version: ${{ matrix.node-version }}
 
@@ -29,4 +29,10 @@ jobs:
                   mongodb-version: ${{ matrix.mongodb-version }}
 
             - run: npm install
-            - run: npm test
+            - name: Run tests
+              run: npm test
+              env:
+                  NODE_ENV: "test"
+                  ATLAS_USERNAME: ${{ secrets.ATLAS_USERNAME }}
+                  ATLAS_PASSWORD: ${{ secrets.ATLAS_PASSWORD }}
+                  PORT: ${{ secrets.PORT }}
