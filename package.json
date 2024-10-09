@@ -3,26 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "nyc --reporter=html --reporter=text --reporter=clover mocha --exit --timeout 10000",
+    "test": "c8 mocha --exit --timeout 10000",
     "posttest": "npm run eslint",
     "start": "node app.mjs",
     "clean": "rm -rf node_modules package-lock.json",
     "eslint": "eslint .",
     "watch": "nodemon app.mjs"
-  },
-  "nyc": {
-    "include": [
-      "app.mjs",
-      "db/**/*.mjs",
-      "models/**/*.mjs",
-      "routes/**/*.mjs"
-    ],
-    "reporter": [
-      "html",
-      "text",
-      "clover"
-    ],
-    "all": true
   },
   "author": "",
   "license": "ISC",
@@ -47,6 +33,6 @@
     "javascript-style-guide": "^1.0.1",
     "mocha": "^10.7.3",
     "node-html-parser": "^6.1.13",
-    "nyc": "^17.1.0"
+    "c8": "^7.12.0"
   }
 }
