@@ -15,6 +15,8 @@ const database = {
         }
       });
 
+      await client.connect();
+
       const db = await client.db();
       let collection = await db.collection("documents");
 
