@@ -15,21 +15,22 @@ chai.should();
 
 describe('documentRoutes', () => {
     let lastInsertedId;
+    let dbClient;
 
     before(async () => {
         const db = await database.getDb();
+        dbClient = db.client;
 
         await db.collection.deleteMany({});
     });
 
     after(async () => {
-        const db = await database.getDb();
+        await dbClient.close();
         await db.client.close();
     });
 
     describe('POST /documents', () => {
         it('Should return status 201', async function () {
-
             const document = {
                 title: "A Title",
                 content: "A Content"
