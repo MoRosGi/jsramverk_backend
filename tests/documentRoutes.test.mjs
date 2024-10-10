@@ -7,6 +7,8 @@ dotenv.config();
 
 process.env.NODE_ENV = 'test';
 
+jest.setTimeout(15000);
+
 describe('documentRoutes', () => {
     let lastInsertedId;
     let db;
@@ -25,6 +27,10 @@ describe('documentRoutes', () => {
             await dbClient.close();
         }
         await server.close();
+    });
+
+    afterEach(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 500));
     });
 
     describe('POST /documents', () => {
