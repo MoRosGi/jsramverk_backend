@@ -9,10 +9,11 @@ process.env.NODE_ENV = 'test';
 
 describe('documentRoutes', () => {
     let lastInsertedId;
+    let db;
     let dbClient;
 
     beforeAll(async () => {
-        const db = await database.getDb();
+        db = await database.getDb();
         dbClient = db.client;
     
         await db.collection.deleteMany({});
@@ -20,6 +21,7 @@ describe('documentRoutes', () => {
 
     afterAll(async () => {
         if (dbClient) {
+            await db.collection.deleteMany({});
             await dbClient.close();
         }
         await server.close();
