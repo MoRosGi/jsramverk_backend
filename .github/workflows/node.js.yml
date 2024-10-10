@@ -30,8 +30,8 @@ jobs:
 
             - run: npm install
 
-            - name: Run tests sequentially
-              run: npm test -- --runInBand
+            - name: Run tests
+              run: npm test
               env:
                   NODE_ENV: "test"
                   ATLAS_USERNAME: ${{ secrets.ATLAS_USERNAME }}
