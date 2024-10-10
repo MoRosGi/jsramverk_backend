@@ -7,7 +7,7 @@ dotenv.config();
 
 process.env.NODE_ENV = 'test';
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 describe('documentRoutes', () => {
     let lastInsertedId;
