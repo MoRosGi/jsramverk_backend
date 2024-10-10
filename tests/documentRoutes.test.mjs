@@ -7,7 +7,6 @@ dotenv.config();
 
 process.env.NODE_ENV = 'test';
 
-
 describe('documentRoutes', () => {
     let lastInsertedId;
     let db;
