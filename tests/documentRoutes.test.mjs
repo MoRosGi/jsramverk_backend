@@ -81,7 +81,7 @@ describe('documentRoutes', () => {
         it('Should be equal to modified title', async() => {
             const res = await request(server).get(`/documents/${lastInsertedId}`);
             expect(res.body.data.title).toBe("A modified title");
-        }, 18000);
+        }, 15000);
     });
 
     describe('DELETE /documents/:id', () => {
