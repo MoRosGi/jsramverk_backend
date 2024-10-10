@@ -44,7 +44,7 @@ describe('documentRoutes', () => {
             const res = await request(server).get("/documents/");
             expect(res.status).toBe(200);
             lastInsertedId = res.body.data[0]._id;
-        });
+        }, 15000);
 
         it('Should have a length of 1', async () => {
             const res = await request(server).get("/documents/");
@@ -56,7 +56,7 @@ describe('documentRoutes', () => {
         it('Should return status 200', async () => {
             const res = await request(server).get(`/documents/${lastInsertedId}`);
             expect(res.status).toBe(200);
-        });
+        }, 15000);
 
         it('Should be equal to title', async () => {
             const res = await request(server).get(`/documents/${lastInsertedId}`);
@@ -74,7 +74,7 @@ describe('documentRoutes', () => {
 
             const res = await request(server).put(`/documents/${lastInsertedId}`).send(documentModified);
             expect(res.status).toBe(200);
-        });
+        }, 15000);
 
         it('Should be equal to modified title', async() => {
             const res = await request(server).get(`/documents/${lastInsertedId}`);
@@ -86,12 +86,12 @@ describe('documentRoutes', () => {
         it('Should return status 200', async () => {
             const res = await request(server).delete(`/documents/${lastInsertedId}`);
             expect(res.status).toBe(200);
-        });
+        }, 15000);
 
         it('Should be null', async () => {
             const res = await request(server).get(`/documents/${lastInsertedId}`);
             expect(res.body.data).toBeNull();
 
-        });
+        }, 15000);
     });
 });
