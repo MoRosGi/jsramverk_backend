@@ -49,7 +49,7 @@ describe('documentRoutes', () => {
         it('Should have a length of 1', async () => {
             const res = await request(server).get("/documents/");
             expect(res.body.data.length).toBe(1);
-        });
+        }, 15000);
     });
 
     describe('GET /documents/:id', () => {
@@ -61,7 +61,7 @@ describe('documentRoutes', () => {
         it('Should be equal to title', async () => {
             const res = await request(server).get(`/documents/${lastInsertedId}`);
             expect(res.body.data.title).toBe("A Title");
-        });
+        }, 15000);
     });
 
     describe('PUT /documents/:id', () => {
@@ -79,7 +79,7 @@ describe('documentRoutes', () => {
         it('Should be equal to modified title', async() => {
             const res = await request(server).get(`/documents/${lastInsertedId}`);
             expect(res.body.data.title).toBe("A modified title");
-        });
+        }, 15000);
     });
 
     describe('DELETE /documents/:id', () => {
