@@ -51,7 +51,6 @@ describe('documentRoutes', () => {
         it('Should have a length of 1', async () => {
             const res = await request(server).get("/documents/");
             expect(res.body.data.length).toBe(1);
-            console.log(res.body.data)
         }, 15000);
     });
 
