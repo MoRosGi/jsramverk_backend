@@ -21,7 +21,7 @@ const database = {
 
       let collectionUsers = await db.collection("users");
       let collectionDocuments = await db.collection("documents");
-
+      let collectionInvites = await db.collection("invites");
 
       if (process.env.NODE_ENV === 'test') {
         // If tests, add test_users and test_documents
@@ -31,6 +31,7 @@ const database = {
       return {
           collectionUsers: collectionUsers,
           collectionDocuments: collectionDocuments,
+          collectionInvites: collectionInvites,
           client: client,
       };
   }
