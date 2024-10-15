@@ -18,14 +18,20 @@ const database = {
       await client.connect();
 
       const db = await client.db();
-      let collection = await db.collection("documents");
+
+      let collectionUsers = await db.collection("users");
+      let collectionDocuments = await db.collection("documents");
+      let collectionInvites = await db.collection("invites");
 
       if (process.env.NODE_ENV === 'test') {
+        // If tests, add test_users and test_documents
           collection = await db.collection("test");
       }
 
       return {
-          collection: collection,
+          collectionUsers: collectionUsers,
+          collectionDocuments: collectionDocuments,
+          collectionInvites: collectionInvites,
           client: client,
       };
   }

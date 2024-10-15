@@ -6,7 +6,7 @@ const documentModel = {
         const db = await database.getDb();
 
         try {
-            return await db.collection.find().toArray();
+            return await db.collectionDocuments.find().toArray();
         } catch (e) {
             throw new Error("Database query failed: " + e.message);
         } finally {
@@ -19,7 +19,7 @@ const documentModel = {
 
         try {
             const filter = {_id: ObjectId.createFromHexString(id)};
-            return await db.collection.findOne(filter);
+            return await db.collectionDocuments.findOne(filter);
         } catch (e) {
             throw new Error("Database query failed: " + e.message);
         } finally {
@@ -35,7 +35,7 @@ const documentModel = {
                 title: body.title,
                 content: body.content,
             };
-            return await db.collection.insertOne(doc)
+            return await db.collectionDocuments.insertOne(doc)
         } catch (e) {
             throw new Error("Database query failed: " + e.message);
         } finally {
@@ -54,7 +54,7 @@ const documentModel = {
                     content: body.content,
                 }
             };
-            return await db.collection.updateOne(filter, doc);
+            return await db.collectionDocuments.updateOne(filter, doc);
         } catch (e) {
             throw new Error("Database query failed: " + e.message);
         } finally {
@@ -67,7 +67,7 @@ const documentModel = {
 
         try {
             const filter = {_id: ObjectId.createFromHexString(id)};
-            return await db.collection.deleteOne(filter);
+            return await db.collectionDocuments.deleteOne(filter);
         } catch (e) {
             throw new Error("Database query failed: " + e.message);
         } finally {
