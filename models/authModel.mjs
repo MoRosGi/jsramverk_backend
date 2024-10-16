@@ -45,7 +45,7 @@ const authModel = {
         } finally {
             await db.client.close();
         }
-    }
+    },
 
     // login
         // body.email body.password
