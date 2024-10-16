@@ -17,6 +17,38 @@ const authModel = {
         // retrieve email and password from database users_collection
             // compare body.email vs email database and body.password vs password users_collection with bcryptj compare
                 // generate JWT token from secret env with jwt.sign and return
+    login: async function login(email, password) {
+        const db = await database.getDb();
+
+        let data = { success: false, message: "" };
+
+        try {
+            const user = await db.collectionUsers.findOne({ email: email });
+
+            if (!user) {
+                data.message = "User not found";
+                return data;
+            }
+
+            const match = await bcrypt.compare(password, user.password);
+
+            if (!match) {
+                data.message = "Incorrect password";
+                return data;
+            }
+
+            // const token = generateToken(user);
+
+            // data.success = true;
+            // data.token = token;
+            // return data;
+        } catch (e) {
+            data.message = "Login error: " + e.message;
+            return data;
+        } finally {
+            await db.client.close();
+        }
+    }
 
     // remove
         // body.email body.password
