@@ -1,8 +1,7 @@
 import database from '../db/database.mjs'
-import { ObjectId } from 'mongodb';
 import bcrypt from 'bcryptjs';
 
-saltRounds = 10;
+const saltRounds = 10;
 
 const authModel = {
     // register
@@ -14,7 +13,7 @@ const authModel = {
         // check if email in database invite_collection
             // update users in documents_collection with the body.email
             // delete the entry for body.email from database invite_collection
-    register: async function register(body) {
+    register: async function register(email, password) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
         if (!emailRegex.test(email)) {
@@ -27,19 +26,24 @@ const authModel = {
 
         const db = await database.getDb();
 
-        // from models/usersModel.mjs
-        // if (users.model.getbyemail(body.email){
-            // throw new Error("User already register");
-        //}
     
         try {
-            const hashedPassword = await bcrypt.hash(body.password, saltRounds);
+            // use model from usersModel.mjs
+            // const user = await db.collectionUsers.findOne({ email: email });
+            //if (user) {
+            //     throw new Error( "User already registered");
+            // }
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
 
             const newUser = {
-                email: body.email,
+                email: email,
                 password: hashedPassword,
             };
-            return db.collectionUsers.insertOne(newUser);
+            await db.collectionUsers.insertOne(newUser);
+
+            // const token = generateToken(user);
+
+            // return { success = true, token:token };
         } catch (e) {
             throw new Error("Database query failed: " + e.message);
         } finally {
@@ -47,39 +51,41 @@ const authModel = {
         }
     },
 
-    // login
-        // body.email body.password
-        // retrieve email and password from database users_collection
-            // compare body.email vs email database and body.password vs password users_collection with bcryptj compare
-                // generate JWT token from secret env with jwt.sign and return
     login: async function login(email, password) {
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+        if (!emailRegex.test(email)) {
+            throw new Error("Invalid email format");
+        }
+
+        if (password.length < 6) {
+            throw new Error("Password must be at least 6 characters long");
+        }
+
         const db = await database.getDb();
 
-        let data = { success: false, message: "" };
-
         try {
+            // use model from usersModel.mjs
             const user = await db.collectionUsers.findOne({ email: email });
 
             if (!user) {
-                data.message = "User not found";
-                return data;
+                // use model from usersModel.mjs
+                throw new Error( "User not found");
             }
 
             const match = await bcrypt.compare(password, user.password);
 
             if (!match) {
-                data.message = "Incorrect password";
-                return data;
+                throw new Error("Incorrect password");
             }
 
             // const token = generateToken(user);
 
-            // data.success = true;
-            // data.token = token;
-            // return data;
+            // return { success = true, token:token };
+
         } catch (e) {
-            data.message = "Login error: " + e.message;
-            return data;
+            throw new Error("Login error: " + e.message);
         } finally {
             await db.client.close();
         }
