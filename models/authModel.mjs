@@ -1,5 +1,8 @@
 import database from '../db/database.mjs'
 import { ObjectId } from 'mongodb';
+import bcrypt from 'bcryptjs';
+
+saltRounds = 10;
 
 const authModel = {
     // register
@@ -11,6 +14,24 @@ const authModel = {
         // check if email in database invite_collection
             // update users in documents_collection with the body.email
             // delete the entry for body.email from database invite_collection
+    register: async function register(body) {
+        const db = await database.getDb();
+
+        // here use function from models/usersModel.mjs to control if user in database
+        try {
+            const hashedPassword = await bcrypt.hash(body.password, saltRounds);
+
+            const newUser = {
+                email: body.email,
+                password: hashedPassword,
+            };
+            return db.collectionUsers.insertOne(newUser);
+        } catch (e) {
+            throw new Error("Database query failed: " + e.message);
+        } finally {
+            await db.client.close();
+        }
+    }
 
     // login
         // body.email body.password
