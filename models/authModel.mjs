@@ -15,9 +15,23 @@ const authModel = {
             // update users in documents_collection with the body.email
             // delete the entry for body.email from database invite_collection
     register: async function register(body) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+        if (!emailRegex.test(email)) {
+            throw new Error("Invalid email format");
+        }
+    
+        if (password.length < 6) {
+            throw new Error("Password must be at least 6 characters long");
+        }
+
         const db = await database.getDb();
 
-        // here use function from models/usersModel.mjs to control if user in database
+        // from models/usersModel.mjs
+        // if (users.model.getbyemail(body.email){
+            // throw new Error("User already register");
+        //}
+    
         try {
             const hashedPassword = await bcrypt.hash(body.password, saltRounds);
 
