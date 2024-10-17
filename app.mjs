@@ -8,6 +8,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 
 import documentRoutes from "./routes/documentRoutes.mjs";
+import authRoutes from "./routes/authRoutes.mjs";
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -25,8 +26,10 @@ if (process.env.NODE_ENV !== 'test') {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use("/auth", authRoutes);
 app.use("/documents", documentRoutes);
 
+// Move middleware to separate file and import
 app.use((req, res, next) => {
   var err = new Error("Not Found");
   err.status = 404;
