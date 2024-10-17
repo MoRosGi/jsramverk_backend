@@ -15,35 +15,39 @@ const authModel = {
             // delete the entry for body.email from database invite_collection
     register: async function register(email, password) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
+
         if (!emailRegex.test(email)) {
             throw new Error("Invalid email format");
         }
-    
+
         if (password.length < 6) {
             throw new Error("Password must be at least 6 characters long");
         }
 
         const db = await database.getDb();
 
-    
         try {
             // use model from usersModel.mjs
-            // const user = await db.collectionUsers.findOne({ email: email });
-            //if (user) {
-            //     throw new Error( "User already registered");
-            // }
+            const user = await db.collectionUsers.findOne({ email: email });
+
+            if (user) {
+                throw new Error( "User already registered");
+            }
+
             const hashedPassword = await bcrypt.hash(password, saltRounds);
 
             const newUser = {
                 email: email,
                 password: hashedPassword,
             };
+
             await db.collectionUsers.insertOne(newUser);
 
             // const token = generateToken(user);
 
-            // return { success = true, token:token };
+            // return { success: true, token: token };
+            return { success: true };
+
         } catch (e) {
             throw new Error("Database query failed: " + e.message);
         } finally {
@@ -54,7 +58,7 @@ const authModel = {
     login: async function login(email, password) {
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
+
         if (!emailRegex.test(email)) {
             throw new Error("Invalid email format");
         }
@@ -70,7 +74,6 @@ const authModel = {
             const user = await db.collectionUsers.findOne({ email: email });
 
             if (!user) {
-                // use model from usersModel.mjs
                 throw new Error( "User not found");
             }
 
@@ -82,7 +85,8 @@ const authModel = {
 
             // const token = generateToken(user);
 
-            // return { success = true, token:token };
+            // return { success: true, token: token };
+            return { success: true };
 
         } catch (e) {
             throw new Error("Login error: " + e.message);
