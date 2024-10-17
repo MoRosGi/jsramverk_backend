@@ -26,7 +26,7 @@ if (process.env.NODE_ENV !== 'test') {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use("/auth", authRoutes);
+app.use("/", authRoutes);
 app.use("/documents", documentRoutes);
 
 // Move middleware to separate file and import
