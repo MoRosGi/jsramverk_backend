@@ -1,6 +1,8 @@
 import database from '../db/database.mjs'
 import bcrypt from 'bcryptjs';
 
+import tokenService from '../services/tokenService.mjs'
+
 const saltRounds = 10;
 
 const authModel = {
@@ -43,10 +45,9 @@ const authModel = {
 
             await db.collectionUsers.insertOne(newUser);
 
-            // const token = generateToken(user);
+            const token = tokenService.generateToken({ email: email});
 
-            // return { success: true, token: token };
-            return { success: true };
+            return { success: true, token: token };
 
         } catch (e) {
             throw new Error("Database query failed: " + e.message);
@@ -83,10 +84,9 @@ const authModel = {
                 throw new Error("Incorrect password");
             }
 
-            // const token = generateToken(user);
+            const token = tokenService.generateToken({ email: email});
 
-            // return { success: true, token: token };
-            return { success: true };
+            return { success: true, token: token };
 
         } catch (e) {
             throw new Error("Login error: " + e.message);

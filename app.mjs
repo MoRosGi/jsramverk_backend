@@ -10,6 +10,10 @@ import cors from 'cors';
 import documentRoutes from "./routes/documentRoutes.mjs";
 import authRoutes from "./routes/authRoutes.mjs";
 
+import notFoundMiddleware from './middlewares/notFoundMiddleware.mjs';
+import errorMiddleware from './middlewares/errorMiddleware.mjs';
+import tokenMiddleware from './middlewares/tokenMiddleware.mjs';
+
 const port = process.env.PORT || 3000;
 const app = express();
 
@@ -27,29 +31,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/", authRoutes);
-app.use("/documents", documentRoutes);
+app.use("/documents", documentRoutes, tokenMiddleware);
 
-// Move middleware to separate file and import
-app.use((req, res, next) => {
-  var err = new Error("Not Found");
-  err.status = 404;
-  next(err);
-});
-
-app.use((err, req, res, next) => {
-  if (res.headersSent) {
-      return next(err);
-  }
-
-  res.status(err.status || 500).json({
-      "errors": [
-          {
-              "status": err.status,
-              "detail": err.message
-          }
-      ]
-  });
-});
+app.use(notFoundMiddleware);
+app.use(errorMiddleware);
 
 const server = app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
