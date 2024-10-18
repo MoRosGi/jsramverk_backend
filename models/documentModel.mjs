@@ -8,7 +8,14 @@ const documentModel = {
         const db = await database.getDb();
 
         try {
-            return await db.collectionDocuments.find().toArray();
+            const filter = {
+                $or: [
+                    { owner: user.email },
+                    { users: user.email }
+                ]
+            }
+
+            return await db.collectionDocuments.find(filter).toArray();
         } catch (e) {
             throw new Error("Database query failed: " + e.message);
         } finally {
@@ -38,8 +45,9 @@ const documentModel = {
             await db.client.close();
         }
     },
+
+    //addUserToDocument function
 }
-    // addUserToDocument: async function addUserToDocument(user, id)
 
 
 
