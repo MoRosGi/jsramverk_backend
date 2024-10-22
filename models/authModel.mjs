@@ -1,6 +1,7 @@
 import database from '../db/database.mjs'
 import bcrypt from 'bcryptjs';
 
+import userModel from './userModel.mjs';
 import tokenService from '../services/tokenService.mjs'
 
 const saltRounds = 10;
@@ -27,8 +28,7 @@ const authModel = {
         const db = await database.getDb();
 
         try {
-            // use model from usersModel.mjs
-            const user = await db.collectionUsers.findOne({ email: email });
+            const user = await userModel.getUserByMail(email);
 
             if (user) {
                 throw new Error( "User already registered");
@@ -69,8 +69,7 @@ const authModel = {
         const db = await database.getDb();
 
         try {
-            // use model from usersModel.mjs
-            const user = await db.collectionUsers.findOne({ email: email });
+            const user = await userModel.getUserByMail(email);
 
             if (!user) {
                 throw new Error( "User not found");
