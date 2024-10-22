@@ -6,15 +6,13 @@ import tokenService from '../services/tokenService.mjs'
 const saltRounds = 10;
 
 const authModel = {
-    // register
-        // body.email body.password
-        // check if email already in database users_collection
-            // bcryptjs hash -> hash body.password
-            // save hash body.password + email in database users_collection
-            // generate JWT token from secret env with jwt.sign and return
-        // check if email in database invite_collection
-            // update users in documents_collection with the body.email
-            // delete the entry for body.email from database invite_collection
+
+    // check if email in collectionUsers:
+        //if(email in collectionUsers): -> throw new Error
+
+    // check if email in database collectionInvites
+        // update users in collectionDocuments with the body.email
+        // delete the entry for body.email from database collectionInvites
     register: async function register(email, password) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

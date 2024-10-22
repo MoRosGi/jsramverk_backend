@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/", authRoutes);
-app.use("/documents", documentRoutes, tokenMiddleware);
+app.use("/documents", tokenMiddleware, documentRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
