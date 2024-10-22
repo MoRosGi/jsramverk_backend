@@ -9,6 +9,7 @@ import cors from 'cors';
 
 import documentRoutes from "./routes/documentRoutes.mjs";
 import authRoutes from "./routes/authRoutes.mjs";
+import inviteRoutes from "./routes/inviteRoutes.mjs"
 
 import notFoundMiddleware from './middlewares/notFoundMiddleware.mjs';
 import errorMiddleware from './middlewares/errorMiddleware.mjs';
@@ -32,6 +33,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/", authRoutes);
 app.use("/documents", tokenMiddleware, documentRoutes);
+app.use("/invite", tokenMiddleware, inviteRoutes);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
