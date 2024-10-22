@@ -11,7 +11,7 @@ const documentModel = {
             const filter = {
                 $or: [
                     { owner: user.email },
-                    { users: user.email }
+                    { collaborators: user.email }
                 ]
             }
 
@@ -31,7 +31,7 @@ const documentModel = {
                 title: body.title,
                 content: body.content,
                 owner: user.email,
-                users: [ user.email ]
+                collaborators: [ user.email ]
             };
 
             await db.collectionDocuments.insertOne(doc)
@@ -53,12 +53,65 @@ const documentModel = {
             const filter = {
                 $or: [
                     { owner: user.email },
-                    { users: user.email }
+                    { collaborators: user.email }
                 ],
                 _id: ObjectId.createFromHexString(id)
             }
 
-            return await db.collectionDocuments.findOne(filter);
+            const result = await db.collectionDocuments.findOne(filter);
+
+            if (result == null) {
+                throw new Error("No valid document.");
+            }
+            return result
+
+        } catch (e) {
+            throw new Error("Database query failed: " + e.message);
+        } finally {
+            await db.client.close();
+        }
+    },
+
+    getDocumentCollaborators: async function getDocumentCollaborators(id) {
+        const db = await database.getDb();
+
+        try {
+            const filter = {
+                _id: ObjectId.createFromHexString(id)
+            }
+
+            const document = await db.collectionDocuments.findOne(filter);
+
+            return document.collaborators;
+        } catch (e) {
+            throw new Error("Database query failed: " + e.message);
+        } finally {
+            await db.client.close();
+        }
+    },
+
+    addCollaborator: async function addUser(documentId, email) {
+        const db = await database.getDb();
+
+        try {
+            const collaborators = await this.getDocumentCollaborators(documentId);
+
+            const collaborator = collaborators.includes(email) ? email : null;
+
+            if (collaborator == email) {
+                throw new Error("Collaborator already added.");
+            }
+
+            const filter = {_id: ObjectId.createFromHexString(documentId)};
+
+            const doc = {
+                $push: {
+                    collaborators: email
+                }
+            };
+
+            await db.collectionDocuments.updateOne(filter, doc);
+
         } catch (e) {
             throw new Error("Database query failed: " + e.message);
         } finally {
