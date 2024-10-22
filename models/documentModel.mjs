@@ -46,9 +46,27 @@ const documentModel = {
         }
     },
 
-    //addUserToDocument function
-}
+    getOne: async function getOne(user, id) {
+        const db = await database.getDb();
 
+        try {
+            const filter = {
+                $or: [
+                    { owner: user.email },
+                    { users: user.email }
+                ],
+                _id: ObjectId.createFromHexString(id)
+            }
+
+            return await db.collectionDocuments.findOne(filter);
+        } catch (e) {
+            throw new Error("Database query failed: " + e.message);
+        } finally {
+            await db.client.close();
+        }
+    },
+
+}
 
 
 
