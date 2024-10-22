@@ -27,6 +27,17 @@ router.post("/", async (req, res, next) => {
     }
 });
 
+router.get('/:id', async (req, res, next) => {
+    try {
+        const result = await documentModel.getOne(req.user, req.params.id);
+        res.status(200).json({
+            data: result
+        });
+    } catch (error) {
+        next(error)
+    }
+});
+
 // router.get("/test", async (req, res, next) => {
 //     try {
 //         res.status(201).json({ 
@@ -38,9 +49,6 @@ router.post("/", async (req, res, next) => {
 //         next(error);
 //     }
 // });
-
-
-
 
 
 
