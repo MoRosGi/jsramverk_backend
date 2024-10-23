@@ -1,5 +1,7 @@
 import database from '../db/database.mjs'
 
+
+// delete
 const documentService = {
     getLastDocumentId: async function getLastDocumentId() {
         const db = await database.getDb();
