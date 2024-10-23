@@ -17,4 +17,17 @@ router.post("/", async (req, res, next) => {
     }
 });
 
+router.get("/:id", async (req, res, next) => {
+    try {
+        const result = await inviteModel.acceptInvite(req.user, req.params.id);
+        res.status(200).json({ 
+            data: {
+                data: result
+            }
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
 export default router;
