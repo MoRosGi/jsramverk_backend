@@ -17,8 +17,8 @@ const userModel = {
 
             return result
 
-        } catch (e) {
-            throw new Error("Database query failed: " + e.message);
+        } catch (error) {
+            throw new Error("Database query failed: " + error.message);
         } finally {
             await db.client.close();
         }
