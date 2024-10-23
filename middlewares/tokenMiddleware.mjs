@@ -12,8 +12,8 @@ const tokenMiddleware = (req, res, next) => {
         return res.status(401).json({ message: "Unauthorized. No token found."})
     }
 
-    jwt.verify(token, secret, function(err, decoded) {
-        if (err) {
+    jwt.verify(token, secret, function(error, decoded) {
+        if (error) {
             return res.status(400).json({ message: "Bad Request. Invalid token."})
         }
 

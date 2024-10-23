@@ -1,13 +1,13 @@
-const errorMiddleware = (err, req, res, next) => {
+const errorMiddleware = (error, req, res, next) => {
     if (res.headersSent) {
-        return next(err);
+        return next(error);
     }
   
-    res.status(err.status || 500).json({
+    res.status(error.status || 500).json({
         "errors": [
             {
-                "status": err.status,
-                "detail": err.message
+                "status": error.status,
+                "detail": error.message
             }
         ]
     });

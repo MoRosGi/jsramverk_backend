@@ -47,8 +47,8 @@ const authModel = {
 
             return { success: true, token: token };
 
-        } catch (e) {
-            throw new Error("Database query failed: " + e.message);
+        } catch (error) {
+            throw new Error("Database query failed: " + error.message);
         } finally {
             await db.client.close();
         }
@@ -85,8 +85,8 @@ const authModel = {
 
             return { success: true, token: token };
 
-        } catch (e) {
-            throw new Error("Login error: " + e.message);
+        } catch (error) {
+            throw new Error("Login error: " + error.message);
         } finally {
             await db.client.close();
         }

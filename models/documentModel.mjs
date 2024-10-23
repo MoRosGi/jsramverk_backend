@@ -16,8 +16,8 @@ const documentModel = {
             }
 
             return await db.collectionDocuments.find(filter).toArray();
-        } catch (e) {
-            throw new Error("Database query failed: " + e.message);
+        } catch (error) {
+            throw new Error("Database query failed: " + error.message);
         } finally {
             await db.client.close();
         }
@@ -39,8 +39,8 @@ const documentModel = {
             // const insertedDocumentId = documentService.getLastDocumentId();
             // return { insertedDocumentId: insertedDocumentId };
 
-        } catch (e) {
-            throw new Error("Database query failed: " + e.message);
+        } catch (error) {
+            throw new Error("Database query failed: " + error.message);
         } finally {
             await db.client.close();
         }
@@ -65,8 +65,8 @@ const documentModel = {
             }
             return result
 
-        } catch (e) {
-            throw new Error("Database query failed: " + e.message);
+        } catch (error) {
+            throw new Error("Database query failed: " + error.message);
         } finally {
             await db.client.close();
         }
@@ -83,8 +83,8 @@ const documentModel = {
             const document = await db.collectionDocuments.findOne(filter);
 
             return document.collaborators;
-        } catch (e) {
-            throw new Error("Database query failed: " + e.message);
+        } catch (error) {
+            throw new Error("Database query failed: " + error.message);
         } finally {
             await db.client.close();
         }
@@ -112,8 +112,8 @@ const documentModel = {
 
             await db.collectionDocuments.updateOne(filter, doc);
 
-        } catch (e) {
-            throw new Error("Database query failed: " + e.message);
+        } catch (error) {
+            throw new Error("Database query failed: " + error.message);
         } finally {
             await db.client.close();
         }
