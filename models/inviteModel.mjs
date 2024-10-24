@@ -13,26 +13,26 @@ const inviteModel = {
             throw new Error("You need to be owner of document to send invite.");
         }
 
+        const collaborators = await documentModel.getDocumentCollaborators(invitation.documentId);
+
+        const collaborator = collaborators.includes(user.email ) ? user.email : null;
+
+        if (collaborator == invitation.receiver) {
+            throw new Error("Receiver is already a collaborator.");
+        }
+
         try {
-            // move to acceptInvite
-                //const registeredUser = await userModel.getUserByMail(invitation.receiver);
-
-                //if (registeredUser) {
-                //    await documentModel.addCollaborator(invitation.documentId, registeredUser.email);
-                //}
-            //
-
             const invite = await this.getOne(invitation.documentId, invitation.receiver);
 
-            if (!invite) {
-                await this.addInvite(user.email, invitation.documentId, invitation.receiver);
-
-                const invite = await this.getOne(invitation.documentId, invitation.receiver);
-
-                const inviteId = invite._id;
-
-                await mailService.sendInvite(invitation.receiver, inviteId);
+            if (invite) {
+                throw new Error("Invite already sent.");
             }
+
+            await this.addInvite(user.email, invitation.documentId, invitation.receiver);
+            const newInvite = await this.getOne(invitation.documentId, invitation.receiver);
+
+            const inviteId = newInvite._id;
+            await mailService.sendInvite(invitation.receiver, inviteId);
         } catch (error) {
             throw new Error("Database query failed: " + error.message);
         } finally {
@@ -94,6 +94,15 @@ const inviteModel = {
             await db.client.close();
         }
     },
+
+    // accept invite : control if status pending otherwise error
+                // move to acceptInvite
+                //const registeredUser = await userModel.getUserByMail(invitation.receiver);
+
+                //if (registeredUser) {
+                //    await documentModel.addCollaborator(invitation.documentId, registeredUser.email);
+                //}
+            //
 }
 
 export default inviteModel;
