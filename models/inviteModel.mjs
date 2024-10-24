@@ -31,8 +31,7 @@ const inviteModel = {
 
                 const inviteId = invite._id;
 
-                // await mailService.sendInvite(invitation.receiver, inviteId);
-                await mailService.sendInvite("annie.v.gustafsson@gmail.com", inviteId);
+                await mailService.sendInvite(invitation.receiver, inviteId);
             }
         } catch (error) {
             throw new Error("Database query failed: " + error.message);
