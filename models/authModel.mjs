@@ -36,12 +36,7 @@ const authModel = {
 
             const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-            const newUser = {
-                email: email,
-                password: hashedPassword,
-            };
-
-            await db.collectionUsers.insertOne(newUser);
+            await userModel.addOne(email, hashedPassword);
 
             const token = tokenService.generateToken({ email: email});
 
@@ -91,21 +86,6 @@ const authModel = {
             await db.client.close();
         }
     }
-
-    // remove
-        // body.email body.password
-        // retrieve email and password from database users_collection
-        // check if user own document in database documents_collection
-            // -> delete owned documents
-        //  delete user from database users_collection
-
-    // invite
-        // document ID + user email + API key from Sigrid/Mailgun
-            // check if user in database users_collection
-                // save user email in database documents_collection
-            // ELSE save in database invites_collection
-
-    // logout ??
 }
 
 export default authModel;
