@@ -1,0 +1,41 @@
+name: Node.js CI
+
+on:
+    push:
+        branches: ["main"]
+    pull_request:
+        branches: ["main"]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                node-version: [18.x, 20.x]
+                mongodb-version: ["6.9"]
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+
+            - name: Start MongoDB
+              uses: supercharge/mongodb-github-action@1.7.0
+              with:
+                  mongodb-version: ${{ matrix.mongodb-version }}
+
+            - run: npm install
+
+            - name: Run tests
+              run: npm test --runInBand
+              env:
+                  NODE_ENV: "test"
+                  ATLAS_USERNAME: ${{ secrets.ATLAS_USERNAME }}
+                  ATLAS_PASSWORD: ${{ secrets.ATLAS_PASSWORD }}
+                  PORT: ${{ secrets.PORT }}
+                  MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
+                  JWT_SECRET: ${{ secrets.JWT_SECRET }}
